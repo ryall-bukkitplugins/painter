@@ -24,10 +24,12 @@ public class FlexiwoolPlayerListener extends PlayerListener
         {
             Block block = _event.getClickedBlock();
             
+            // If we've hit a wool block.
             if (block != null && block.getType() == Material.WOOL)
             {
                 ItemStack item = _event.getPlayer().getItemInHand();
                 
+                // If we've hit the wool block with a dye.
                 if (item.getTypeId() == ITEM_DYE)
                 {
                     byte color = (byte)(15 - item.getDurability());
@@ -35,11 +37,13 @@ public class FlexiwoolPlayerListener extends PlayerListener
                     if (block.getData() == color)
                         return;
                     
+                    // If we have economy enabled, we need to charge the user first.
                     if (Flexiwool.get().getConfig().isEconomyEnabled())
                     {
                         EconomyInterface economy = Flexiwool.get().getEconomy().getInterface();
                         double price = Flexiwool.get().getConfig().getEconomyDyeCost();
                         
+                        // Ignore invalid prices.
                         if (price > 0)
                         {
                             if (!economy.canAfford(player.getName(), price))
@@ -58,8 +62,10 @@ public class FlexiwoolPlayerListener extends PlayerListener
                         }
                     }
                     
+                    // Change the colour of the wool block.
                     block.setData(color);
                     
+                    // Consume the dye if we have the option enabled.
                     if (Flexiwool.get().getConfig().shouldConsumeDye())
                     {
                         int remaining = item.getAmount();
