@@ -1,0 +1,12 @@
+# Options relating to dying blocks.
+Dye:
+    # Whether or not to consume a dye when it is used.
+    Consume: true
+# Options relating to the economy.
+Economy:
+    # Enable the economy system (dying blocks will be charged).
+    Enabled: false
+    # The economy adapter to use (iConomy or MineConomy).
+    Adapter: iConomy
+    # The cost to dye a block.
+    DyeCost: 1

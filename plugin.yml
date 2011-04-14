@@ -1,0 +1,6 @@
+name: Flexiwool
+main: me.ryall.flexiwool.Flexiwool
+version: 1.0.0
+description: Make your world a more colourful place with lots of control over wool and wool colours.
+author: SirHedgehog
+commands:
