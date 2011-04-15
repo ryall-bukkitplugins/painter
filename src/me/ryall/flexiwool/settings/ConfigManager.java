@@ -38,7 +38,7 @@ public class ConfigManager
     
     public int getMaxFill()
     {
-        return config.getInt("Fill.Max", 100);
+        return config.getInt("Fill.Max", 1000);
     }
     
     public boolean shouldFillChargePerBlock()
@@ -46,8 +46,18 @@ public class ConfigManager
         return config.getBoolean("Fill.ChargePerBlock", true);
     }
     
-    public boolean shouldFillConsumePerBlock()
+    public int getMaxHistory()
     {
-        return config.getBoolean("Fill.ConsumePerBlock", false);
+        return config.getInt("History.Max", 1000);
+    }
+    
+    public boolean shouldHistoryRefundOnRollback()
+    {
+        return config.getBoolean("History.RefundOnRollback", true);
+    }
+    
+    public boolean shouldHistoryPersistOnLogout()
+    {
+        return config.getBoolean("History.PersistOnLogout", false);
     }
 }
