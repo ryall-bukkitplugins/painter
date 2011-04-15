@@ -87,16 +87,32 @@ public class Flexiwool extends JavaPlugin
     {
         if (_label.equals("flexiwool") || _label.equals("fw"))
         {
-            if (_args.length == 1)
+            if (_sender instanceof Player)
             {
-                if (_args[0] == "rollback" || _args[0] == "rb" || _args[0] == "undo")
+                Player player = (Player)_sender;
+            
+                if (_args.length == 1)
                 {
-                    if (_sender instanceof Player)
-                        historyManager.rollback((Player)_sender);
-                    else
-                        logError("Rollbacks can only be executed in-game.");
+                    if (_args[0].equals("rollback") || _args[0].equals("rb") || _args[0].equals("undo"))
+                    {
+                        if (permissionManager.hasRollbackPermission(player))
+                        {
+                            if (historyManager.rollback(player))
+                                communicationManager.message(player, "Your changes were rolled back.");
+                            else
+                                communicationManager.error(player, "You don't have any changes to roll back.");
+                        }    
+                        else
+                            communicationManager.error(player, "You don't have permission to roll back changes.");
+                        
+                        return true;
+                    }
                 }
+                
+                communicationManager.message(player, "Usage: /flexiwool <rollback|rb|undo>");
             }
+            else
+                logError("Flexiwool commands can only be executed in-game.");
             
             return true;
         }

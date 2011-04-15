@@ -50,6 +50,12 @@ public class PermissionManager
             hasPermission(_player, PERMISSIONS_PREFIX + "fill");
     }
     
+    public boolean hasRollbackPermission(Player _player)
+    {
+        return hasGlobalPermission(_player) || 
+            hasPermission(_player, PERMISSIONS_PREFIX + "rollback");
+    }
+    
     public boolean hasTransmutePermission(Player _player)
     {
         return hasGlobalPermission(_player) || 

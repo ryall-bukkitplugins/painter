@@ -37,7 +37,7 @@ public class HistoryManager
         return null;
     }
     
-    public void rollback(Player _player)
+    public boolean rollback(Player _player)
     {
         History history = get(_player);
         
@@ -51,8 +51,12 @@ public class HistoryManager
             
                 if (Flexiwool.get().getConfig().shouldHistoryRefundOnRollback())
                     Flexiwool.get().getEconomy().refund(_player, log.getPrice());
+                
+                return true;
             }
         }
+        
+        return false;
     }
     
     public void delete(Player _player)
