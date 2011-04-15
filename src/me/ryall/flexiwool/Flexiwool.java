@@ -15,6 +15,7 @@ import me.ryall.flexiwool.listeners.FlexiwoolPlayerListener;
 import me.ryall.flexiwool.listeners.FlexiwoolPluginListener;
 import me.ryall.flexiwool.settings.ConfigManager;
 import me.ryall.flexiwool.settings.PermissionManager;
+import me.ryall.flexiwool.system.Painter;
 
 // TODO:
 // Selection tool to change the colour of an entire wall or area.
@@ -36,6 +37,7 @@ public class Flexiwool extends JavaPlugin
     private PermissionManager permissionManager;
     private EconomyManager economyManager;
     private CommunicationManager communicationManager;
+    private Painter painter;
     
     public static Flexiwool get()
     {
@@ -53,6 +55,7 @@ public class Flexiwool extends JavaPlugin
         permissionManager = new PermissionManager();
         economyManager = new EconomyManager();
         communicationManager = new CommunicationManager();
+        painter = new Painter();
         
         registerEvents();
         
@@ -91,6 +94,11 @@ public class Flexiwool extends JavaPlugin
     public CommunicationManager getComms()
     {
         return communicationManager;
+    }
+    
+    public Painter getPainter()
+    {
+        return painter;
     }
     
     public void logInfo(String _message)

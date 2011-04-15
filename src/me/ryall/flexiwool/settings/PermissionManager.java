@@ -44,6 +44,12 @@ public class PermissionManager
             hasPermission(_player, PERMISSIONS_PREFIX + "dye");
     }
     
+    public boolean hasFillPermission(Player _player)
+    {
+        return hasGlobalPermission(_player) || 
+            hasPermission(_player, PERMISSIONS_PREFIX + "fill");
+    }
+    
     public boolean hasTransmutePermission(Player _player)
     {
         return hasGlobalPermission(_player) || 

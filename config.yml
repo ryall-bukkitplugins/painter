@@ -2,6 +2,7 @@
 Dye:
     # Whether or not to consume a dye when it is used.
     Consume: true
+    
 # Options relating to the economy.
 Economy:
     # Enable the economy system (dying blocks will be charged).
@@ -10,3 +11,10 @@ Economy:
     Adapter: iConomy
     # The cost to dye a block.
     DyeCost: 1
+    
+# Options relating to colour fill.
+Fill:
+    # The maximum number of blocks to change when performing a fill.
+    Max: 1000
+    # Whether or not to charge per block (if the economy system is enabled).
+    ChargePerBlock: true

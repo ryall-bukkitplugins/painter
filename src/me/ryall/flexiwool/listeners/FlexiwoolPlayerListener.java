@@ -2,12 +2,12 @@ package me.ryall.flexiwool.listeners;
 
 // Local
 import me.ryall.flexiwool.Flexiwool;
-import me.ryall.flexiwool.economy.EconomyInterface;
 
 //Bukkit
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
@@ -32,39 +32,24 @@ public class FlexiwoolPlayerListener extends PlayerListener
                 // If we've hit the wool block with a dye.
                 if (item.getTypeId() == ITEM_DYE)
                 {
-                    byte color = (byte)(15 - item.getDurability());
+                    byte colour = (byte)(15 - item.getDurability());
                     
-                    if (block.getData() == color)
+                    // Don't colour blocks that are already set to the colour we want to set.
+                    if (block.getData() == colour)
                         return;
                     
-                    // If we have economy enabled, we need to charge the user first.
-                    if (Flexiwool.get().getConfig().isEconomyEnabled())
+                    // Left click to change a single block.
+                    if (_event.getAction() == Action.LEFT_CLICK_BLOCK)
                     {
-                        EconomyInterface economy = Flexiwool.get().getEconomy().getInterface();
-                        double price = Flexiwool.get().getConfig().getEconomyDyeCost();
-                        
-                        // Ignore invalid prices.
-                        if (price > 0)
-                        {
-                            if (!economy.canAfford(player.getName(), price))
-                            {
-                                Flexiwool.get().getComms().error(player, "You need " + economy.formatCurrency(price) + " to dye this block.");
-                                return;
-                            }
-                            
-                            if (!economy.subtract(player.getName(), price))
-                            {
-                                Flexiwool.get().getComms().error(player, "Failed to charge your account.");
-                                return;
-                            }
-                            
-                            Flexiwool.get().getComms().message(player, "Charged " + economy.formatCurrency(price) + " to dye this block.");
-                        }
+                        Flexiwool.get().getPainter().set(player, block, colour);
                     }
-                    
-                    // Change the colour of the wool block.
-                    block.setData(color);
-                    
+                    // Right click to fill.
+                    else if (_event.getAction() == Action.RIGHT_CLICK_BLOCK && 
+                            Flexiwool.get().getPermissions().hasFillPermission(player))
+                    {
+                        Flexiwool.get().getPainter().fill(player, block, colour);
+                    }
+
                     // Consume the dye if we have the option enabled.
                     if (Flexiwool.get().getConfig().shouldConsumeDye())
                     {

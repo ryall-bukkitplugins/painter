@@ -1,6 +1,7 @@
 package me.ryall.flexiwool.economy;
 
 // Bukkit
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 // Local
@@ -9,6 +10,11 @@ import me.ryall.flexiwool.Flexiwool;
 public class EconomyManager
 {
     private EconomyInterface economy;
+    
+    public EconomyInterface getInterface()
+    {
+        return economy;
+    }    
     
     public void load()
     {
@@ -34,8 +40,32 @@ public class EconomyManager
         }
     }
     
-    public EconomyInterface getInterface()
+    public boolean charge(Player _player, int _numBlocks) 
     {
-        return economy;
+        if (Flexiwool.get().getConfig().isEconomyEnabled())
+        {
+            EconomyInterface economy = getInterface();
+            double price = Flexiwool.get().getConfig().getEconomyDyeCost() * _numBlocks;
+            
+            // Ignore invalid prices.
+            if (price > 0)
+            {
+                if (!economy.canAfford(_player.getName(), price))
+                {
+                    Flexiwool.get().getComms().error(_player, "You need " + economy.formatCurrency(price) + " to dye this block.");
+                    return false;
+                }
+                
+                if (!economy.subtract(_player.getName(), price))
+                {
+                    Flexiwool.get().getComms().error(_player, "Failed to charge your account.");
+                    return false;
+                }
+                
+                Flexiwool.get().getComms().message(_player, "Charged " + economy.formatCurrency(price) + " to dye this block.");
+            }
+        }
+        
+        return true;
     }
 }

@@ -35,4 +35,19 @@ public class ConfigManager
     {
         return config.getDouble("Economy.DyeCost", 1);
     }
+    
+    public int getMaxFill()
+    {
+        return config.getInt("Fill.Max", 100);
+    }
+    
+    public boolean shouldFillChargePerBlock()
+    {
+        return config.getBoolean("Fill.ChargePerBlock", true);
+    }
+    
+    public boolean shouldFillConsumePerBlock()
+    {
+        return config.getBoolean("Fill.ConsumePerBlock", false);
+    }
 }
