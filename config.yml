@@ -24,7 +24,7 @@ History:
     # Whether or not to enable history.
     Enabled: true
     # The maximum number of block changes to keep in history per-player (fills count as one change).
-    Max: 5
+    Max: 10
     # Whether or not to refund the player when undoing changes.
     RefundOnRollback: true
     # Whether or not to persist undo history after the player logs off (not recommended).

@@ -73,35 +73,48 @@ public class History
     
     public History()
     {
-        logs = new Log[Flexiwool.get().getConfig().getMaxHistory()];
-        pointer = 0;
+        int max = Flexiwool.get().getConfig().getMaxHistory();
+        
+        if (max > 0)
+        {
+            logs = new Log[max];
+            pointer = max - 1;
+        }
     }
     
     public Log createLog(String _worldName, double _price)
     {
-        Log log = new Log(_worldName, _price);
+        if (logs != null)
+        {
+            Log log = new Log(_worldName, _price);
+            
+            pointer = ++pointer % logs.length;
+            logs[pointer] = log;
+            
+            return log;
+        }
         
-        logs[pointer] = log;
-        pointer = ++pointer % logs.length;
-        
-        return log;
+        return null;
     }
     
     public void rollback()
     {
-        Log log = logs[pointer];
-        
-        if (log != null)
+        if (logs != null)
         {
-            logs[pointer] = null;
-            pointer = (pointer + logs.length - 1) % logs.length;
-        
-            log.rollback();
+            Log log = logs[pointer];
+            
+            if (log != null)
+            {
+                logs[pointer] = null;
+                pointer = (pointer + logs.length - 1) % logs.length;
+            
+                log.rollback();
+            }
         }
     }
 
     public Log getLastLog()
     {
-        return logs[pointer];
+        return (logs != null) ? logs[pointer] : null;
     }
 }

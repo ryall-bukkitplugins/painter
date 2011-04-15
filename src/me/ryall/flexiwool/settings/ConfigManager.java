@@ -53,7 +53,7 @@ public class ConfigManager
     
     public int getMaxHistory()
     {
-        return config.getInt("History.Max", 1000);
+        return config.getInt("History.Max", 10);
     }
     
     public boolean shouldHistoryRefundOnRollback()

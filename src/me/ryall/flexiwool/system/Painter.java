@@ -34,7 +34,9 @@ public class Painter
         if (history != null)
         {
             Log log = history.createLog(_player.getWorld().getName(), Flexiwool.get().getEconomy().getPrice(_player, 1));
-            log.addEntry(_block, _colour);
+            
+            if (log != null)
+                log.addEntry(_block, _colour);
         }
         
         // Change the colour of the wool block.
@@ -95,7 +97,7 @@ public class Painter
         Log log = null;
         
         if (history != null)
-            log = history.createLog(_player.getWorld().getName(), Flexiwool.get().getEconomy().getPrice(_player, 1));
+            log = history.createLog(_player.getWorld().getName(), Flexiwool.get().getEconomy().getPrice(_player, blocksToCharge));
         
         // Finally, let's do the fill.
         for (int i = 0; i < blocksFound; i++)

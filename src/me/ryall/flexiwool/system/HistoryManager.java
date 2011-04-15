@@ -37,34 +37,44 @@ public class HistoryManager
         return null;
     }
     
-    public boolean rollback(Player _player)
+    public void rollback(Player _player)
     {
-        History history = get(_player);
+        if (!Flexiwool.get().getConfig().isHistoryEnabled())
+            return;
         
-        if (history != null)
+        if (Flexiwool.get().getPermissions().hasRollbackPermission(_player))
         {
-            Log log = history.getLastLog();
+            History history = get(_player);
             
-            if (log != null)
+            if (history != null)
             {
-                history.rollback();
-            
-                if (Flexiwool.get().getConfig().shouldHistoryRefundOnRollback())
-                    Flexiwool.get().getEconomy().refund(_player, log.getPrice());
+                Log log = history.getLastLog();
                 
-                return true;
+                if (log != null)
+                {
+                    history.rollback();
+                
+                    if (Flexiwool.get().getConfig().shouldHistoryRefundOnRollback())
+                        Flexiwool.get().getEconomy().refund(_player, log.getPrice());
+                    
+                    Flexiwool.get().getComms().message(_player, "Your changes were rolled-back.");
+                }
+                else
+                    Flexiwool.get().getComms().error(_player, "You don't have any changes to roll-back.");
             }
-        }
-        
-        return false;
+            else
+                Flexiwool.get().getComms().error(_player, "Could not access your history.");
+        }    
+        else
+            Flexiwool.get().getComms().error(_player, "You don't have permission to roll-back changes.");
     }
     
     public void delete(Player _player)
     {
         if (!Flexiwool.get().getConfig().shouldHistoryPersistOnLogout())
         {
-            if (histories.containsKey(_player))
-                histories.remove(_player);
+            if (histories.containsKey(_player.getName()))
+                histories.remove(_player.getName());
         }
     }
 }

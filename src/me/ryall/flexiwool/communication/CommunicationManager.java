@@ -9,9 +9,7 @@ import me.ryall.flexiwool.Flexiwool;
 
 public class CommunicationManager
 {
-    public static String PLUGIN_HEADER = ChatColor.WHITE + "[" + ChatColor.GOLD + Flexiwool.PLUGIN_NAME + ChatColor.WHITE + "] ";
-    public static String MESSAGE_HEADER = PLUGIN_HEADER + ChatColor.WHITE;
-    public static String ERROR_HEADER = PLUGIN_HEADER + ChatColor.RED + "Error: ";
+    public static String MESSAGE_HEADER = ChatColor.WHITE + "[" + ChatColor.GOLD + Flexiwool.PLUGIN_NAME + ChatColor.WHITE + "] " + ChatColor.WHITE;
     
     public void message(Player _player, String _message)
     {
@@ -20,6 +18,14 @@ public class CommunicationManager
     
     public void error(Player _player, String _message)
     {
-        _player.sendMessage(ERROR_HEADER + _message);
+        _player.sendMessage(MESSAGE_HEADER + ChatColor.RED + "Error: " + _message);
+    }
+
+    public void command(Player _player, String _command, String _description)
+    {
+        _player.sendMessage(MESSAGE_HEADER + ChatColor.GOLD + _command + ChatColor.WHITE + ": " + _description);
+        
+        //if (_description != null)
+        //    _player.sendMessage(MESSAGE_HEADER + ChatColor.WHITE + _description);
     }
 }

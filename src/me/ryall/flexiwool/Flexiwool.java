@@ -24,7 +24,6 @@ import me.ryall.flexiwool.system.Painter;
 public class Flexiwool extends JavaPlugin
 {
     public static String PLUGIN_NAME = "Flexiwool";
-    //public static String PLUGIN_VERSION = "1.2.0";
     public static String LOG_HEADER = "[" + PLUGIN_NAME + "] ";
     private static Flexiwool instance = null;
     
@@ -90,21 +89,13 @@ public class Flexiwool extends JavaPlugin
                 {
                     if (_args[0].equals("rollback") || _args[0].equals("rb") || _args[0].equals("undo"))
                     {
-                        if (permissionManager.hasRollbackPermission(player))
-                        {
-                            if (historyManager.rollback(player))
-                                communicationManager.message(player, "Your changes were rolled back.");
-                            else
-                                communicationManager.error(player, "You don't have any changes to roll back.");
-                        }    
-                        else
-                            communicationManager.error(player, "You don't have permission to roll back changes.");
-                        
+                        historyManager.rollback(player);
                         return true;
                     }
                 }
                 
-                communicationManager.message(player, "Usage: /flexiwool <rollback|rb|undo>");
+                if (configManager.isHistoryEnabled())
+                    communicationManager.command(player, "/fw <rollback|rb|undo>", "Roll-back your last change.");
             }
             else
                 logError("Flexiwool commands can only be executed in-game.");
