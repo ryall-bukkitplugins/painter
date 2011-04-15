@@ -19,19 +19,18 @@ public class FlexiwoolPlayerListener extends PlayerListener
     
     public void onPlayerInteract(PlayerInteractEvent _event)
     {
-        Player player = _event.getPlayer();
-        
-        if (Flexiwool.get().getPermissions().hasDyePermission(player))
-        {
-            Block block = _event.getClickedBlock();
+        Block block = _event.getClickedBlock();
             
-            // If we've hit a wool block.
-            if (block != null && block.getType() == Material.WOOL)
+        // If we've hit a wool block.
+        if (block != null && block.getType() == Material.WOOL)
+        {
+            Player player = _event.getPlayer();
+            ItemStack item = player.getItemInHand();
+            
+            // If we've hit the wool block with a dye.
+            if (item.getTypeId() == ITEM_DYE)
             {
-                ItemStack item = _event.getPlayer().getItemInHand();
-                
-                // If we've hit the wool block with a dye.
-                if (item.getTypeId() == ITEM_DYE)
+                if (Flexiwool.get().getPermissions().hasDyePermission(player))
                 {
                     byte colour = (byte)(15 - item.getDurability());
                     
@@ -50,7 +49,7 @@ public class FlexiwoolPlayerListener extends PlayerListener
                     {
                         Flexiwool.get().getPainter().fill(player, block, colour);
                     }
-
+    
                     // Consume the dye if we have the option enabled.
                     if (Flexiwool.get().getConfig().shouldConsumeDye())
                     {
@@ -62,11 +61,9 @@ public class FlexiwoolPlayerListener extends PlayerListener
                             player.getInventory().remove(item);
                     }
                 }
+                else
+                    Flexiwool.get().getComms().error(player, "You don't have permission to dye blocks.");
             }
-        } 
-        else
-        {
-            Flexiwool.get().getComms().error(player, "You don't have permission to dye blocks.");
         }
     }
     

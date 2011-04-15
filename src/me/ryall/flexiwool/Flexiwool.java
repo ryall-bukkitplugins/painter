@@ -21,16 +21,10 @@ import me.ryall.flexiwool.settings.PermissionManager;
 import me.ryall.flexiwool.system.HistoryManager;
 import me.ryall.flexiwool.system.Painter;
 
-// TODO:
-// Selection tool to change the colour of an entire wall or area.
-// Allow "fill" with right-click, "change" with left click.
-// Allow undoing of X number of previous changes (including refund).
-// Allow white-listed blocks to be changed to coloured wool (with independent prices).
-
 public class Flexiwool extends JavaPlugin
 {
     public static String PLUGIN_NAME = "Flexiwool";
-    public static String PLUGIN_VERSION = "1.2.0";
+    //public static String PLUGIN_VERSION = "1.2.0";
     public static String LOG_HEADER = "[" + PLUGIN_NAME + "] ";
     private static Flexiwool instance = null;
     
@@ -67,7 +61,7 @@ public class Flexiwool extends JavaPlugin
         
         getConfig().load();
         
-        logInfo("Started: v" + PLUGIN_VERSION);
+        logInfo("Started");
     }
 
     public void onDisable()
@@ -78,6 +72,7 @@ public class Flexiwool extends JavaPlugin
     public void registerEvents()
     {
         PluginManager pm = getServer().getPluginManager();
+        
         pm.registerEvent(Event.Type.PLUGIN_ENABLE, pluginListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);

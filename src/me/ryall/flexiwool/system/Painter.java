@@ -59,7 +59,7 @@ public class Painter
         {
             Block currentBlock = blocks.get(i);
             
-            for (int j = 1; j < blockFaces.length; j++)
+            for (int j = 0; j < blockFaces.length; j++)
             {
                 // Get the adjacent block.
                 Block adjacentBlock = currentBlock.getFace(blockFaces[j]);
