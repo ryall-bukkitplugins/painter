@@ -5,20 +5,19 @@ import java.util.ArrayList;
 
 // Bukkit
 import me.ryall.flexiwool.Flexiwool;
-import me.ryall.flexiwool.system.Historian.Log.Entry;
 
 // Bukkit
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 
-public class Historian
+public class History
 {
-    // Logs for the historian to track.
+    // Logs for the history.
     public class Log
     {
+        // Entries for the logs.
         public class Entry
         {
             Location location;
@@ -28,27 +27,27 @@ public class Historian
         
         ArrayList<Entry> entries;
         String worldName;
-        double cost;
+        double price;
 
-        public Log(String _worldName, double _cost)
+        public Log(String _worldName, double _price)
         {
             entries = new ArrayList<Entry>();
             worldName = _worldName;
-            cost = _cost;
+            price = _price;
         }
         
-        public void addEntry(Block _block, byte _colourFrom, byte _colourTo)
+        public void addEntry(Block _block, byte _colour)
         {
             Entry entry = new Entry();
             
             entry.location = _block.getLocation();
-            entry.colourFrom = _colourFrom;
-            entry.colourTo = _colourTo;
+            entry.colourFrom = _block.getData();
+            entry.colourTo = _colour;
             
             entries.add(entry);
         }
         
-        private boolean rollback()
+        private void rollback()
         {
             for (Entry entry : entries)
             {
@@ -61,23 +60,26 @@ public class Historian
                     block.setData(entry.colourFrom);
                 }
             }
-            
-            return true;
+        }
+
+        public double getPrice()
+        {
+            return price;
         }
     }
     
     Log[] logs;
     int pointer;
     
-    public Historian()
+    public History()
     {
         logs = new Log[Flexiwool.get().getConfig().getMaxHistory()];
         pointer = 0;
     }
     
-    public Log createLog(String _worldName, double _cost)
+    public Log createLog(String _worldName, double _price)
     {
-        Log log = new Log(_worldName, _cost);
+        Log log = new Log(_worldName, _price);
         
         logs[pointer] = log;
         pointer = ++pointer % logs.length;
@@ -85,7 +87,7 @@ public class Historian
         return log;
     }
     
-    public boolean rollback()
+    public void rollback()
     {
         Log log = logs[pointer];
         
@@ -94,9 +96,12 @@ public class Historian
             logs[pointer] = null;
             pointer = (pointer + logs.length - 1) % logs.length;
         
-            return log.rollback();
+            log.rollback();
         }
-        
-        return false;
+    }
+
+    public Log getLastLog()
+    {
+        return logs[pointer];
     }
 }

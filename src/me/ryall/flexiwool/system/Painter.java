@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 // Local
 import me.ryall.flexiwool.Flexiwool;
+import me.ryall.flexiwool.system.History.Log;
 
 // Bukkit
 import org.bukkit.Material;
@@ -26,6 +27,15 @@ public class Painter
         // If we have economy enabled, we need to charge the user first.
         if (!Flexiwool.get().getEconomy().charge(_player, 1))
             return;
+        
+        // Log the change.
+        History history = Flexiwool.get().getHistory().get(_player);
+        
+        if (history != null)
+        {
+            Log log = history.createLog(_player.getWorld().getName(), Flexiwool.get().getEconomy().getPrice(_player, 1));
+            log.addEntry(_block, _colour);
+        }
         
         // Change the colour of the wool block.
         _block.setData(_colour); 
@@ -80,10 +90,22 @@ public class Painter
         if (!Flexiwool.get().getEconomy().charge(_player, blocksToCharge))
             return;
         
+        // Log the change.
+        History history = Flexiwool.get().getHistory().get(_player);
+        Log log = null;
+        
+        if (history != null)
+            log = history.createLog(_player.getWorld().getName(), Flexiwool.get().getEconomy().getPrice(_player, 1));
+        
         // Finally, let's do the fill.
         for (int i = 0; i < blocksFound; i++)
         {
-            blocks.get(i).setData(_colour);
+            Block changeBlock = blocks.get(i);
+            
+            if (log != null)
+                log.addEntry(changeBlock, _colour);
+            
+            changeBlock.setData(_colour);
         }
     }
 }

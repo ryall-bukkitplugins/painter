@@ -4,6 +4,9 @@ package me.ryall.flexiwool;
 import java.util.logging.Logger;
 
 // Bukkit
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +18,7 @@ import me.ryall.flexiwool.listeners.FlexiwoolPlayerListener;
 import me.ryall.flexiwool.listeners.FlexiwoolPluginListener;
 import me.ryall.flexiwool.settings.ConfigManager;
 import me.ryall.flexiwool.settings.PermissionManager;
+import me.ryall.flexiwool.system.HistoryManager;
 import me.ryall.flexiwool.system.Painter;
 
 // TODO:
@@ -26,7 +30,7 @@ import me.ryall.flexiwool.system.Painter;
 public class Flexiwool extends JavaPlugin
 {
     public static String PLUGIN_NAME = "Flexiwool";
-    public static String PLUGIN_VERSION = "1.0.0";
+    public static String PLUGIN_VERSION = "1.2.0";
     public static String LOG_HEADER = "[" + PLUGIN_NAME + "] ";
     private static Flexiwool instance = null;
     
@@ -37,6 +41,7 @@ public class Flexiwool extends JavaPlugin
     private PermissionManager permissionManager;
     private EconomyManager economyManager;
     private CommunicationManager communicationManager;
+    private HistoryManager historyManager;
     private Painter painter;
     
     public static Flexiwool get()
@@ -55,6 +60,7 @@ public class Flexiwool extends JavaPlugin
         permissionManager = new PermissionManager();
         economyManager = new EconomyManager();
         communicationManager = new CommunicationManager();
+        historyManager = new HistoryManager();
         painter = new Painter();
         
         registerEvents();
@@ -74,6 +80,28 @@ public class Flexiwool extends JavaPlugin
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvent(Event.Type.PLUGIN_ENABLE, pluginListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+        pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
+    }
+    
+    public boolean onCommand(CommandSender _sender, Command _command, String _label, String[] _args)
+    {
+        if (_label.equals("flexiwool") || _label.equals("fw"))
+        {
+            if (_args.length == 1)
+            {
+                if (_args[0] == "rollback" || _args[0] == "rb" || _args[0] == "undo")
+                {
+                    if (_sender instanceof Player)
+                        historyManager.rollback((Player)_sender);
+                    else
+                        logError("Rollbacks can only be executed in-game.");
+                }
+            }
+            
+            return true;
+        }
+        
+        return false;
     }
     
     public ConfigManager getConfig()
@@ -94,6 +122,11 @@ public class Flexiwool extends JavaPlugin
     public CommunicationManager getComms()
     {
         return communicationManager;
+    }
+    
+    public HistoryManager getHistory()
+    {
+        return historyManager;
     }
     
     public Painter getPainter()

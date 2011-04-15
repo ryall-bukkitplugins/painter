@@ -40,12 +40,21 @@ public class EconomyManager
         }
     }
     
+    public double getPrice(Player _player, int _numBlocks)
+    {
+        if (Flexiwool.get().getConfig().isEconomyEnabled())
+        {
+            return Flexiwool.get().getConfig().getEconomyDyeCost() * _numBlocks;
+        }
+        
+        return 0;
+    }
+    
     public boolean charge(Player _player, int _numBlocks) 
     {
         if (Flexiwool.get().getConfig().isEconomyEnabled())
         {
-            EconomyInterface economy = getInterface();
-            double price = Flexiwool.get().getConfig().getEconomyDyeCost() * _numBlocks;
+            double price = getPrice(_player, _numBlocks);
             
             // Ignore invalid prices.
             if (price > 0)
@@ -67,5 +76,22 @@ public class EconomyManager
         }
         
         return true;
+    }
+
+    public void refund(Player _player, double _price)
+    {
+        if (Flexiwool.get().getConfig().isEconomyEnabled())
+        {
+            if (_price > 0)
+            {
+                if (!economy.add(_player.getName(), _price))
+                {
+                    Flexiwool.get().getComms().error(_player, "Failed to refund your account.");
+                    return;
+                }
+                
+                Flexiwool.get().getComms().message(_player, "Refunded " + economy.formatCurrency(_price) + ".");
+            }
+        }
     }
 }

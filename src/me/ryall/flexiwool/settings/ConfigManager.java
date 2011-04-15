@@ -46,6 +46,11 @@ public class ConfigManager
         return config.getBoolean("Fill.ChargePerBlock", true);
     }
     
+    public boolean isHistoryEnabled()
+    {
+        return config.getBoolean("History.Enabled", true);
+    }
+    
     public int getMaxHistory()
     {
         return config.getInt("History.Max", 1000);

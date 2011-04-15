@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class FlexiwoolPlayerListener extends PlayerListener
@@ -67,5 +68,10 @@ public class FlexiwoolPlayerListener extends PlayerListener
         {
             Flexiwool.get().getComms().error(player, "You don't have permission to dye blocks.");
         }
+    }
+    
+    public void onPlayerQuit(PlayerQuitEvent _event)
+    {
+        Flexiwool.get().getHistory().delete(_event.getPlayer());
     }
 }
