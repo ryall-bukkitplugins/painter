@@ -1,11 +1,11 @@
-package me.ryall.flexiwool.economy;
+package me.ryall.painter.economy;
 
 // Bukkit
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 // Local
-import me.ryall.flexiwool.Flexiwool;
+import me.ryall.painter.Painter;
 
 public class EconomyManager
 {
@@ -20,11 +20,11 @@ public class EconomyManager
     {
         if (economy == null) 
         {
-            String adapter = Flexiwool.get().getConfig().getEconomyAdapter();
+            String adapter = Painter.get().getConfig().getEconomyAdapter();
             
             if (!adapter.isEmpty())
             {
-                Plugin plugin = Flexiwool.get().getServer().getPluginManager().getPlugin(adapter);
+                Plugin plugin = Painter.get().getServer().getPluginManager().getPlugin(adapter);
             
                 if (plugin != null)
                 {
@@ -34,7 +34,7 @@ public class EconomyManager
                         economy = new MineConomyAdapter(plugin);
                     
                     if (economy != null)
-                        Flexiwool.get().logInfo("Attached to " + adapter);
+                        Painter.get().logInfo("Attached to " + adapter);
                 }
             }
         }
@@ -42,9 +42,9 @@ public class EconomyManager
     
     public double getPrice(Player _player, int _numBlocks)
     {
-        if (Flexiwool.get().getConfig().isEconomyEnabled())
+        if (Painter.get().getConfig().isEconomyEnabled())
         {
-            return Flexiwool.get().getConfig().getEconomyDyeCost() * _numBlocks;
+            return Painter.get().getConfig().getEconomyDyeCost() * _numBlocks;
         }
         
         return 0;
@@ -52,7 +52,7 @@ public class EconomyManager
     
     public boolean charge(Player _player, int _numBlocks) 
     {
-        if (Flexiwool.get().getConfig().isEconomyEnabled())
+        if (Painter.get().getConfig().isEconomyEnabled())
         {
             double price = getPrice(_player, _numBlocks);
             
@@ -61,17 +61,17 @@ public class EconomyManager
             {
                 if (!economy.canAfford(_player.getName(), price))
                 {
-                    Flexiwool.get().getComms().error(_player, "You need " + economy.formatCurrency(price) + " to dye this block.");
+                    Painter.get().getComms().error(_player, "You need " + economy.formatCurrency(price) + " to dye this block.");
                     return false;
                 }
                 
                 if (!economy.subtract(_player.getName(), price))
                 {
-                    Flexiwool.get().getComms().error(_player, "Failed to charge your account.");
+                    Painter.get().getComms().error(_player, "Failed to charge your account.");
                     return false;
                 }
                 
-                Flexiwool.get().getComms().message(_player, "Charged " + economy.formatCurrency(price) + " to dye this block.");
+                Painter.get().getComms().message(_player, "Charged " + economy.formatCurrency(price) + " to dye this block.");
             }
         }
         
@@ -80,17 +80,17 @@ public class EconomyManager
 
     public void refund(Player _player, double _price)
     {
-        if (Flexiwool.get().getConfig().isEconomyEnabled())
+        if (Painter.get().getConfig().isEconomyEnabled())
         {
             if (_price > 0)
             {
                 if (!economy.add(_player.getName(), _price))
                 {
-                    Flexiwool.get().getComms().error(_player, "Failed to refund your account.");
+                    Painter.get().getComms().error(_player, "Failed to refund your account.");
                     return;
                 }
                 
-                Flexiwool.get().getComms().message(_player, "Refunded " + economy.formatCurrency(_price) + ".");
+                Painter.get().getComms().message(_player, "Refunded " + economy.formatCurrency(_price) + ".");
             }
         }
     }

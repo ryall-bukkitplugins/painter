@@ -1,11 +1,11 @@
-package me.ryall.flexiwool.system;
+package me.ryall.painter.system;
 
 // Java
 import java.util.ArrayList;
 
 // Local
-import me.ryall.flexiwool.Flexiwool;
-import me.ryall.flexiwool.system.History.Log;
+import me.ryall.painter.Painter;
+import me.ryall.painter.system.History.Log;
 
 // Bukkit
 import org.bukkit.Material;
@@ -13,7 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
-public class Painter
+public class PaintManager
 {
     public static BlockFace[] blockFaces = 
     {
@@ -25,15 +25,15 @@ public class Painter
     public void set(Player _player, Block _block, byte _colour)
     {
         // If we have economy enabled, we need to charge the user first.
-        if (!Flexiwool.get().getEconomy().charge(_player, 1))
+        if (!Painter.get().getEconomy().charge(_player, 1))
             return;
         
         // Log the change.
-        History history = Flexiwool.get().getHistory().get(_player);
+        History history = Painter.get().getHistory().get(_player);
         
         if (history != null)
         {
-            Log log = history.createLog(_player.getWorld().getName(), Flexiwool.get().getEconomy().getPrice(_player, 1));
+            Log log = history.createLog(_player.getWorld().getName(), Painter.get().getEconomy().getPrice(_player, 1));
             
             if (log != null)
                 log.addEntry(_block, _colour);
@@ -49,7 +49,7 @@ public class Painter
         ArrayList<Block> blocks = new ArrayList<Block>();
         
         int blocksFound = 1;
-        int blocksAllowed = Flexiwool.get().getConfig().getMaxFill();
+        int blocksAllowed = Painter.get().getConfig().getMaxFill();
         
         if (blocksAllowed <= 0)
             return;
@@ -85,19 +85,19 @@ public class Painter
         }
         
         // Charge for the transaction.
-        int blocksToCharge = Flexiwool.get().getConfig().shouldFillChargePerBlock() 
+        int blocksToCharge = Painter.get().getConfig().shouldFillChargePerBlock() 
                                  ? blocksFound
                                  : 1;
         
-        if (!Flexiwool.get().getEconomy().charge(_player, blocksToCharge))
+        if (!Painter.get().getEconomy().charge(_player, blocksToCharge))
             return;
         
         // Log the change.
-        History history = Flexiwool.get().getHistory().get(_player);
+        History history = Painter.get().getHistory().get(_player);
         Log log = null;
         
         if (history != null)
-            log = history.createLog(_player.getWorld().getName(), Flexiwool.get().getEconomy().getPrice(_player, blocksToCharge));
+            log = history.createLog(_player.getWorld().getName(), Painter.get().getEconomy().getPrice(_player, blocksToCharge));
         
         // Finally, let's do the fill.
         for (int i = 0; i < blocksFound; i++)

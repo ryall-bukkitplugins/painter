@@ -1,15 +1,15 @@
-package me.ryall.flexiwool.communication;
+package me.ryall.painter.communication;
 
 // Bukkit
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 //Local
-import me.ryall.flexiwool.Flexiwool;
+import me.ryall.painter.Painter;
 
 public class CommunicationManager
 {
-    public static String MESSAGE_HEADER = ChatColor.WHITE + "[" + ChatColor.GOLD + Flexiwool.PLUGIN_NAME + ChatColor.WHITE + "] " + ChatColor.WHITE;
+    public static String MESSAGE_HEADER = ChatColor.WHITE + "[" + ChatColor.GOLD + Painter.PLUGIN_NAME + ChatColor.WHITE + "] " + ChatColor.WHITE;
     
     public void message(Player _player, String _message)
     {

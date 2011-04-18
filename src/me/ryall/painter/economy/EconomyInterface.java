@@ -1,4 +1,4 @@
-package me.ryall.flexiwool.economy;
+package me.ryall.painter.economy;
 
 // Java
 import java.text.DecimalFormat;

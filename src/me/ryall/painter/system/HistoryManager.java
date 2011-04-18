@@ -1,11 +1,11 @@
-package me.ryall.flexiwool.system;
+package me.ryall.painter.system;
 
 // Java
 import java.util.HashMap;
 
 // Local
-import me.ryall.flexiwool.Flexiwool;
-import me.ryall.flexiwool.system.History.Log;
+import me.ryall.painter.Painter;
+import me.ryall.painter.system.History.Log;
 
 // Bukkit
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public class HistoryManager
     
     public History get(Player _player)
     {
-        if (Flexiwool.get().getConfig().isHistoryEnabled())
+        if (Painter.get().getConfig().isHistoryEnabled())
         {
             History history = histories.get(_player.getName());
             
@@ -39,10 +39,10 @@ public class HistoryManager
     
     public void rollback(Player _player)
     {
-        if (!Flexiwool.get().getConfig().isHistoryEnabled())
+        if (!Painter.get().getConfig().isHistoryEnabled())
             return;
         
-        if (Flexiwool.get().getPermissions().hasRollbackPermission(_player))
+        if (Painter.get().getPermissions().hasRollbackPermission(_player))
         {
             History history = get(_player);
             
@@ -54,24 +54,24 @@ public class HistoryManager
                 {
                     history.rollback();
                 
-                    if (Flexiwool.get().getConfig().shouldHistoryRefundOnRollback())
-                        Flexiwool.get().getEconomy().refund(_player, log.getPrice());
+                    if (Painter.get().getConfig().shouldHistoryRefundOnRollback())
+                        Painter.get().getEconomy().refund(_player, log.getPrice());
                     
-                    Flexiwool.get().getComms().message(_player, "Your changes were rolled-back.");
+                    Painter.get().getComms().message(_player, "Your changes were rolled-back.");
                 }
                 else
-                    Flexiwool.get().getComms().error(_player, "You don't have any changes to roll-back.");
+                    Painter.get().getComms().error(_player, "You don't have any changes to roll-back.");
             }
             else
-                Flexiwool.get().getComms().error(_player, "Could not access your history.");
+                Painter.get().getComms().error(_player, "Could not access your history.");
         }    
         else
-            Flexiwool.get().getComms().error(_player, "You don't have permission to roll-back changes.");
+            Painter.get().getComms().error(_player, "You don't have permission to roll-back changes.");
     }
     
     public void delete(Player _player)
     {
-        if (!Flexiwool.get().getConfig().shouldHistoryPersistOnLogout())
+        if (!Painter.get().getConfig().shouldHistoryPersistOnLogout())
         {
             if (histories.containsKey(_player.getName()))
                 histories.remove(_player.getName());

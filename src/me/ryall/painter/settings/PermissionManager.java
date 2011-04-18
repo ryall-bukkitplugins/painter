@@ -1,7 +1,7 @@
-package me.ryall.flexiwool.settings;
+package me.ryall.painter.settings;
 
 // Local
-import me.ryall.flexiwool.Flexiwool;
+import me.ryall.painter.Painter;
 
 // Bukkit
 import org.bukkit.entity.Player;
@@ -21,11 +21,11 @@ public class PermissionManager
     {
         if (permissions == null) 
         {
-            Plugin plugin = Flexiwool.get().getServer().getPluginManager().getPlugin("Permissions");
+            Plugin plugin = Painter.get().getServer().getPluginManager().getPlugin("Permissions");
             
             if (plugin != null)
             {
-                Flexiwool.get().logInfo("Attached to Permissions");
+                Painter.get().logInfo("Attached to Permissions");
                 permissions = ((Permissions)plugin).getHandler();
             }
         }

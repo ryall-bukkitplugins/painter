@@ -1,4 +1,4 @@
-package me.ryall.flexiwool;
+package me.ryall.painter;
 
 // Java
 import java.util.logging.Logger;
@@ -12,32 +12,32 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 // Local
-import me.ryall.flexiwool.communication.CommunicationManager;
-import me.ryall.flexiwool.economy.EconomyManager;
-import me.ryall.flexiwool.listeners.FlexiwoolPlayerListener;
-import me.ryall.flexiwool.listeners.FlexiwoolPluginListener;
-import me.ryall.flexiwool.settings.ConfigManager;
-import me.ryall.flexiwool.settings.PermissionManager;
-import me.ryall.flexiwool.system.HistoryManager;
-import me.ryall.flexiwool.system.Painter;
+import me.ryall.painter.communication.CommunicationManager;
+import me.ryall.painter.economy.EconomyManager;
+import me.ryall.painter.listeners.PainterPlayerListener;
+import me.ryall.painter.listeners.PainterPluginListener;
+import me.ryall.painter.settings.ConfigManager;
+import me.ryall.painter.settings.PermissionManager;
+import me.ryall.painter.system.HistoryManager;
+import me.ryall.painter.system.PaintManager;
 
-public class Flexiwool extends JavaPlugin
+public class Painter extends JavaPlugin
 {
-    public static String PLUGIN_NAME = "Flexiwool";
+    public static String PLUGIN_NAME = "Painter";
     public static String LOG_HEADER = "[" + PLUGIN_NAME + "] ";
-    private static Flexiwool instance = null;
+    private static Painter instance = null;
     
     private Logger log;
-    private FlexiwoolPluginListener pluginListener;
-    private FlexiwoolPlayerListener playerListener;
+    private PainterPluginListener pluginListener;
+    private PainterPlayerListener playerListener;
     private ConfigManager configManager;
     private PermissionManager permissionManager;
     private EconomyManager economyManager;
     private CommunicationManager communicationManager;
     private HistoryManager historyManager;
-    private Painter painter;
+    private PaintManager paintManager;
     
-    public static Flexiwool get()
+    public static Painter get()
     {
         return instance;
     }
@@ -46,15 +46,15 @@ public class Flexiwool extends JavaPlugin
     {
         instance = this;
         log = Logger.getLogger("Minecraft");
-        pluginListener = new FlexiwoolPluginListener();
-        playerListener = new FlexiwoolPlayerListener();
+        pluginListener = new PainterPluginListener();
+        playerListener = new PainterPlayerListener();
         
         configManager = new ConfigManager();
         permissionManager = new PermissionManager();
         economyManager = new EconomyManager();
         communicationManager = new CommunicationManager();
         historyManager = new HistoryManager();
-        painter = new Painter();
+        paintManager = new PaintManager();
         
         registerEvents();
         
@@ -79,7 +79,7 @@ public class Flexiwool extends JavaPlugin
     
     public boolean onCommand(CommandSender _sender, Command _command, String _label, String[] _args)
     {
-        if (_label.equals("flexiwool") || _label.equals("fw"))
+        if (_label.equals("painter") || _label.equals("paint"))
         {
             if (_sender instanceof Player)
             {
@@ -95,10 +95,10 @@ public class Flexiwool extends JavaPlugin
                 }
                 
                 if (configManager.isHistoryEnabled())
-                    communicationManager.command(player, "/fw <rollback|rb|undo>", "Roll-back your last change.");
+                    communicationManager.command(player, "/paint <rollback|rb|undo>", "Roll-back your last change.");
             }
             else
-                logError("Flexiwool commands can only be executed in-game.");
+                logError("Commands can only be executed in-game.");
             
             return true;
         }
@@ -131,9 +131,9 @@ public class Flexiwool extends JavaPlugin
         return historyManager;
     }
     
-    public Painter getPainter()
+    public PaintManager getPaint()
     {
-        return painter;
+        return paintManager;
     }
     
     public void logInfo(String _message)

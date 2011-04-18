@@ -1,10 +1,10 @@
-package me.ryall.flexiwool.settings;
+package me.ryall.painter.settings;
 
 // Local
 import org.bukkit.util.config.Configuration;
 
 // Bukkit
-import me.ryall.flexiwool.Flexiwool;
+import me.ryall.painter.Painter;
 
 public class ConfigManager
 {
@@ -12,7 +12,7 @@ public class ConfigManager
     
     public void load() 
     {
-        config = Flexiwool.get().getConfiguration();
+        config = Painter.get().getConfiguration();
         config.load();
     }
     
@@ -23,7 +23,7 @@ public class ConfigManager
     
     public boolean isEconomyEnabled()
     {
-        return config.getBoolean("Economy.Enabled", false) && Flexiwool.get().getEconomy().getInterface() != null;
+        return config.getBoolean("Economy.Enabled", false) && Painter.get().getEconomy().getInterface() != null;
     }
     
     public String getEconomyAdapter()

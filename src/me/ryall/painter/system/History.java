@@ -1,10 +1,10 @@
-package me.ryall.flexiwool.system;
+package me.ryall.painter.system;
 
 // Java
 import java.util.ArrayList;
 
 // Bukkit
-import me.ryall.flexiwool.Flexiwool;
+import me.ryall.painter.Painter;
 
 // Bukkit
 import org.bukkit.Location;
@@ -51,7 +51,7 @@ public class History
         {
             for (Entry entry : entries)
             {
-                World world = Flexiwool.get().getServer().getWorld(worldName);
+                World world = Painter.get().getServer().getWorld(worldName);
                 Block block = world.getBlockAt(entry.location);
                 
                 // Make sure we're not changing something we shouldn't be.
@@ -73,7 +73,7 @@ public class History
     
     public History()
     {
-        int max = Flexiwool.get().getConfig().getMaxHistory();
+        int max = Painter.get().getConfig().getMaxHistory();
         
         if (max > 0)
         {
