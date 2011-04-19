@@ -1,10 +1,9 @@
 package me.ryall.painter.economy;
 
-// Bukkit
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-// Local
 import me.ryall.painter.Painter;
 
 public class EconomyManager
@@ -40,38 +39,36 @@ public class EconomyManager
         }
     }
     
-    public double getPrice(Player _player, int _numBlocks)
+    public double getPrice(Player _player, Block _block, int _numBlocks)
     {
         if (Painter.get().getConfig().isEconomyEnabled())
         {
-            return Painter.get().getConfig().getEconomyDyeCost() * _numBlocks;
+            return Painter.get().getConfig().getCost(_block) * _numBlocks;
         }
         
         return 0;
     }
     
-    public boolean charge(Player _player, int _numBlocks) 
+    public boolean charge(Player _player, double _price) 
     {
         if (Painter.get().getConfig().isEconomyEnabled())
         {
-            double price = getPrice(_player, _numBlocks);
-            
             // Ignore invalid prices.
-            if (price > 0)
+            if (_price > 0)
             {
-                if (!economy.canAfford(_player.getName(), price))
+                if (!economy.canAfford(_player.getName(), _price))
                 {
-                    Painter.get().getComms().error(_player, "You need " + economy.formatCurrency(price) + " to dye this block.");
+                    Painter.get().getComms().error(_player, "You need " + economy.formatCurrency(_price) + " to dye this block.");
                     return false;
                 }
                 
-                if (!economy.subtract(_player.getName(), price))
+                if (!economy.subtract(_player.getName(), _price))
                 {
                     Painter.get().getComms().error(_player, "Failed to charge your account.");
                     return false;
                 }
                 
-                Painter.get().getComms().message(_player, "Charged " + economy.formatCurrency(price) + " to dye this block.");
+                Painter.get().getComms().message(_player, "Charged " + economy.formatCurrency(_price) + " to dye this block.");
             }
         }
         

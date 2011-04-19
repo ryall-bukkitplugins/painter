@@ -1,13 +1,11 @@
 package me.ryall.painter.system;
 
-// Java
+
 import java.util.ArrayList;
 
-// Local
 import me.ryall.painter.Painter;
 import me.ryall.painter.system.History.Log;
 
-// Bukkit
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -22,10 +20,20 @@ public class PaintManager
         BlockFace.NORTH, BlockFace.SOUTH
     };
     
+    public boolean isPaintable(Block _block)
+    {
+        if (_block.getType() == Material.WOOL)
+            return true;
+        
+        return Painter.get().getConfig().isTransmutable(_block);
+    }
+    
     public void set(Player _player, Block _block, byte _colour)
     {
+        double price = Painter.get().getEconomy().getPrice(_player, _block, 1);
+        
         // If we have economy enabled, we need to charge the user first.
-        if (!Painter.get().getEconomy().charge(_player, 1))
+        if (!Painter.get().getEconomy().charge(_player, price))
             return;
         
         // Log the change.
@@ -33,10 +41,8 @@ public class PaintManager
         
         if (history != null)
         {
-            Log log = history.createLog(_player.getWorld().getName(), Painter.get().getEconomy().getPrice(_player, 1));
-            
-            if (log != null)
-                log.addEntry(_block, _colour);
+            Log log = history.createLog(_player.getWorld().getName(), price);
+            paint(log, _block, _colour);
         }
         
         // Change the colour of the wool block.
@@ -67,7 +73,7 @@ public class PaintManager
                 Block adjacentBlock = currentBlock.getFace(blockFaces[j]);
                 
                 // If the block matches and it hasn't already been added, add it now.
-                if (adjacentBlock.getType() == Material.WOOL && 
+                if (adjacentBlock.getType() == currentBlock.getType() && 
                         adjacentBlock.getData() == currentBlock.getData() &&
                         !blocks.contains(adjacentBlock))
                 {
@@ -85,11 +91,10 @@ public class PaintManager
         }
         
         // Charge for the transaction.
-        int blocksToCharge = Painter.get().getConfig().shouldFillChargePerBlock() 
-                                 ? blocksFound
-                                 : 1;
+        int blocksToCharge = Painter.get().getConfig().shouldFillChargePerBlock() ? blocksFound: 1;
+        double price = Painter.get().getEconomy().getPrice(_player, _source, blocksToCharge);
         
-        if (!Painter.get().getEconomy().charge(_player, blocksToCharge))
+        if (!Painter.get().getEconomy().charge(_player, price))
             return;
         
         // Log the change.
@@ -97,17 +102,21 @@ public class PaintManager
         Log log = null;
         
         if (history != null)
-            log = history.createLog(_player.getWorld().getName(), Painter.get().getEconomy().getPrice(_player, blocksToCharge));
+            log = history.createLog(_player.getWorld().getName(), price);
         
         // Finally, let's do the fill.
         for (int i = 0; i < blocksFound; i++)
         {
-            Block changeBlock = blocks.get(i);
-            
-            if (log != null)
-                log.addEntry(changeBlock, _colour);
-            
-            changeBlock.setData(_colour);
+            paint(log, blocks.get(i), _colour);
         }
+    }
+    
+    private void paint(Log _log, Block _block, byte _colour)
+    {
+        if (_log != null)
+            _log.addEntry(_block, _colour);
+        
+        _block.setType(Material.WOOL);
+        _block.setData(_colour);
     }
 }

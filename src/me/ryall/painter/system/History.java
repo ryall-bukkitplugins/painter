@@ -21,6 +21,7 @@ public class History
         public class Entry
         {
             Location location;
+            Material type;
             byte colourFrom;
             byte colourTo;
         }
@@ -41,6 +42,7 @@ public class History
             Entry entry = new Entry();
             
             entry.location = _block.getLocation();
+            entry.type = _block.getType();
             entry.colourFrom = _block.getData();
             entry.colourTo = _colour;
             
@@ -57,7 +59,10 @@ public class History
                 // Make sure we're not changing something we shouldn't be.
                 if (block.getType() == Material.WOOL && block.getData() == entry.colourTo)
                 {
-                    block.setData(entry.colourFrom);
+                    block.setType(entry.type);
+                    
+                    if (entry.type == Material.WOOL)
+                        block.setData(entry.colourFrom);
                 }
             }
         }

@@ -13,7 +13,7 @@ import com.nijiko.permissions.PermissionHandler;
 
 public class PermissionManager
 {
-    public static String PERMISSIONS_PREFIX = "flexiwool.";
+    public static String PERMISSIONS_PREFIX = "painter.";
     
     public PermissionHandler permissions;
     

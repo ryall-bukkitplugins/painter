@@ -29,3 +29,12 @@ History:
     RefundOnRollback: true
     # Whether or not to persist undo history after the player logs off (not recommended).
     PersistOnLogout: false
+
+# Options relating to transmutation (changing non-wool blocks into coloured-wool blocks).
+Transmutation:
+    # Whether or not to enable fill transmutation (it's highly recommended that this is false).
+    EnableFill: false
+    # A list of blocks that can be transmuted, and their costs.
+    Blocks:
+        STONE: 1
+        COBBLESTONE: 1
