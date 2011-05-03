@@ -20,7 +20,7 @@ public class IConomyAdapter extends EconomyInterface
     public double getBalance(String _playerName)
     {
         Account acc = iConomy.getBank().getAccount(_playerName);
-        
+
         return (acc == null) ? 0 : acc.getBalance();
     }
 
@@ -28,35 +28,35 @@ public class IConomyAdapter extends EconomyInterface
     {
         if (_amount == 0)
             return true;
-        
+
         Account acc = iConomy.getBank().getAccount(_playerName);
-        
+
         return (acc == null) ? false : acc.hasEnough(_amount);
     }
 
     public boolean add(String _playerName, double _amount)
     {
         Account acc = iConomy.getBank().getAccount(_playerName);
-        
+
         if (acc != null)
         {
             acc.add(_amount);
             return true;
         }
-        
+
         return false;
     }
 
     public boolean subtract(String _playerName, double _amount)
     {
         Account acc = iConomy.getBank().getAccount(_playerName);
-        
+
         if (acc != null)
         {
             acc.subtract(_amount);
             return true;
         }
-        
+
         return false;
     }
 
@@ -64,15 +64,15 @@ public class IConomyAdapter extends EconomyInterface
     {
         Account accFrom = iConomy.getBank().getAccount(_playerFrom);
         Account accTo = iConomy.getBank().getAccount(_playerTo);
-        
+
         if (accFrom != null && accTo != null)
         {
             accFrom.subtract(_amount);
             accTo.add(_amount);
-            
+
             return true;
         }
-        
+
         return false;
     }
 

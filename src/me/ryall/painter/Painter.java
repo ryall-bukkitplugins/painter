@@ -26,7 +26,7 @@ public class Painter extends JavaPlugin
     public static String PLUGIN_NAME = "Painter";
     public static String LOG_HEADER = "[" + PLUGIN_NAME + "] ";
     private static Painter instance = null;
-    
+
     private Logger log;
     private PainterPluginListener pluginListener;
     private PainterPlayerListener playerListener;
@@ -36,30 +36,30 @@ public class Painter extends JavaPlugin
     private CommunicationManager communicationManager;
     private HistoryManager historyManager;
     private PaintManager paintManager;
-    
+
     public static Painter get()
     {
         return instance;
     }
-    
+
     public void onEnable()
     {
         instance = this;
         log = Logger.getLogger("Minecraft");
         pluginListener = new PainterPluginListener();
         playerListener = new PainterPlayerListener();
-        
+
         configManager = new ConfigManager();
         permissionManager = new PermissionManager();
         economyManager = new EconomyManager();
         communicationManager = new CommunicationManager();
         historyManager = new HistoryManager();
         paintManager = new PaintManager();
-        
+
         registerEvents();
-        
+
         getConfig().load();
-        
+
         logInfo("Started");
     }
 
@@ -67,24 +67,24 @@ public class Painter extends JavaPlugin
     {
         logInfo("Stopped");
     }
-    
+
     public void registerEvents()
     {
         PluginManager pm = getServer().getPluginManager();
-        
+
         pm.registerEvent(Event.Type.PLUGIN_ENABLE, pluginListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
     }
-    
+
     public boolean onCommand(CommandSender _sender, Command _command, String _label, String[] _args)
     {
         if (_label.equals("painter") || _label.equals("paint"))
         {
             if (_sender instanceof Player)
             {
-                Player player = (Player)_sender;
-            
+                Player player = (Player) _sender;
+
                 if (_args.length == 1)
                 {
                     if (_args[0].equals("rollback") || _args[0].equals("rb") || _args[0].equals("undo"))
@@ -93,54 +93,53 @@ public class Painter extends JavaPlugin
                         return true;
                     }
                 }
-                
+
                 if (configManager.isHistoryEnabled())
                     communicationManager.command(player, "/paint <rollback|rb|undo>", "Roll-back your last change.");
-            }
-            else
+            } else
                 logError("Commands can only be executed in-game.");
-            
+
             return true;
         }
-        
+
         return false;
     }
-    
+
     public ConfigManager getConfig()
     {
         return configManager;
     }
-    
+
     public PermissionManager getPermissions()
     {
         return permissionManager;
     }
-    
+
     public EconomyManager getEconomy()
     {
         return economyManager;
     }
-    
+
     public CommunicationManager getComms()
     {
         return communicationManager;
     }
-    
+
     public HistoryManager getHistory()
     {
         return historyManager;
     }
-    
+
     public PaintManager getPaint()
     {
         return paintManager;
     }
-    
+
     public void logInfo(String _message)
     {
         log.info(LOG_HEADER + _message);
     }
-    
+
     public void logError(String _message)
     {
         log.severe(LOG_HEADER + _message);

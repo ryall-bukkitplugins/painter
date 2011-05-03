@@ -14,59 +14,53 @@ import com.nijiko.permissions.PermissionHandler;
 public class PermissionManager
 {
     public static String PERMISSIONS_PREFIX = "painter.";
-    
+
     public PermissionHandler permissions;
-    
+
     public void load()
     {
-        if (permissions == null) 
+        if (permissions == null)
         {
             Plugin plugin = Painter.get().getServer().getPluginManager().getPlugin("Permissions");
-            
+
             if (plugin != null)
             {
                 Painter.get().logInfo("Attached to Permissions");
-                permissions = ((Permissions)plugin).getHandler();
+                permissions = ((Permissions) plugin).getHandler();
             }
         }
     }
-    
+
     protected boolean hasGlobalPermission(Player _player)
     {
-        return (permissions == null && _player.isOp()) || 
-            hasPermission(_player, PERMISSIONS_PREFIX + "*") || 
-            hasPermission(_player, "*");
+        return (permissions == null && _player.isOp()) || hasPermission(_player, PERMISSIONS_PREFIX + "*") || hasPermission(_player, "*");
     }
-    
+
     public boolean hasDyePermission(Player _player)
     {
-        return hasGlobalPermission(_player) || 
-            hasPermission(_player, PERMISSIONS_PREFIX + "dye");
+        return hasGlobalPermission(_player) || hasPermission(_player, PERMISSIONS_PREFIX + "dye");
     }
-    
+
     public boolean hasFillPermission(Player _player)
     {
-        return hasGlobalPermission(_player) || 
-            hasPermission(_player, PERMISSIONS_PREFIX + "fill");
+        return hasGlobalPermission(_player) || hasPermission(_player, PERMISSIONS_PREFIX + "fill");
     }
-    
+
     public boolean hasRollbackPermission(Player _player)
     {
-        return hasGlobalPermission(_player) || 
-            hasPermission(_player, PERMISSIONS_PREFIX + "rollback");
+        return hasGlobalPermission(_player) || hasPermission(_player, PERMISSIONS_PREFIX + "rollback");
     }
-    
+
     public boolean hasTransmutePermission(Player _player)
     {
-        return hasGlobalPermission(_player) || 
-            hasPermission(_player, PERMISSIONS_PREFIX + "transmute");
+        return hasGlobalPermission(_player) || hasPermission(_player, PERMISSIONS_PREFIX + "transmute");
     }
-    
+
     private boolean hasPermission(Player _player, String _permission)
     {
         if (permissions != null)
             return permissions.has(_player, _permission);
-        
+
         return false;
     }
 }

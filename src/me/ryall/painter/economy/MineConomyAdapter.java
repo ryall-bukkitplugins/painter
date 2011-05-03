@@ -9,15 +9,15 @@ import com.spikensbror.bukkit.mineconomy.MineConomy;
 public class MineConomyAdapter extends EconomyInterface
 {
     private MineConomy plugin;
-    
+
     public String getName()
     {
         return "MineConomy";
     }
-    
+
     public MineConomyAdapter(Plugin _plugin)
     {
-        plugin = (MineConomy)_plugin;
+        plugin = (MineConomy) _plugin;
     }
 
     public double getBalance(String _playerName)
@@ -44,7 +44,7 @@ public class MineConomyAdapter extends EconomyInterface
     {
         return plugin.getBank().transfer(_playerFrom, _playerTo, _amount);
     }
-    
+
     public String formatCurrency(double _amount)
     {
         return "$" + getCurrencyString(_amount);
