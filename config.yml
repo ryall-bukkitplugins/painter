@@ -1,3 +1,10 @@
+# Options relating to the general operation of the plugin.
+General:
+    # Whether or not to use the "secure" method of changing blocks. The "secure" method is recommended but slightly slower.
+    # The secure method forces the original block to be broken and a replacement block to be inserted in its place.
+    # If this is turned off, the block will simply have its type changed and will not offer any security in protected regions.
+    Secure: true
+
 # Options relating to dying blocks.
 Dye:
     # Whether or not to consume a dye when it is used.

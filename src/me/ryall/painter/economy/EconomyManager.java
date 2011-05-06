@@ -19,7 +19,7 @@ public class EconomyManager
     {
         if (economy == null)
         {
-            String adapter = Painter.get().getConfig().getEconomyAdapter();
+            String adapter = Painter.get().getConfigManager().getEconomyAdapter();
 
             if (!adapter.isEmpty())
             {
@@ -41,9 +41,9 @@ public class EconomyManager
 
     public double getPrice(Player _player, Block _block, int _numBlocks)
     {
-        if (Painter.get().getConfig().isEconomyEnabled())
+        if (Painter.get().getConfigManager().isEconomyEnabled())
         {
-            return Painter.get().getConfig().getCost(_block) * _numBlocks;
+            return Painter.get().getConfigManager().getCost(_block) * _numBlocks;
         }
 
         return 0;
@@ -51,24 +51,24 @@ public class EconomyManager
 
     public boolean charge(Player _player, double _price)
     {
-        if (Painter.get().getConfig().isEconomyEnabled())
+        if (Painter.get().getConfigManager().isEconomyEnabled())
         {
             // Ignore invalid prices.
             if (_price > 0)
             {
                 if (!economy.canAfford(_player.getName(), _price))
                 {
-                    Painter.get().getComms().error(_player, "You need " + economy.formatCurrency(_price) + " to dye this block.");
+                    Painter.get().getCommunicationManager().error(_player, "You need " + economy.formatCurrency(_price) + " to dye this block.");
                     return false;
                 }
 
                 if (!economy.subtract(_player.getName(), _price))
                 {
-                    Painter.get().getComms().error(_player, "Failed to charge your account.");
+                    Painter.get().getCommunicationManager().error(_player, "Failed to charge your account.");
                     return false;
                 }
 
-                Painter.get().getComms().message(_player, "Charged " + economy.formatCurrency(_price) + " to dye this block.");
+                Painter.get().getCommunicationManager().message(_player, "Charged " + economy.formatCurrency(_price) + " to dye this block.");
             }
         }
 
@@ -77,17 +77,17 @@ public class EconomyManager
 
     public void refund(Player _player, double _price)
     {
-        if (Painter.get().getConfig().isEconomyEnabled())
+        if (Painter.get().getConfigManager().isEconomyEnabled())
         {
             if (_price > 0)
             {
                 if (!economy.add(_player.getName(), _price))
                 {
-                    Painter.get().getComms().error(_player, "Failed to refund your account.");
+                    Painter.get().getCommunicationManager().error(_player, "Failed to refund your account.");
                     return;
                 }
 
-                Painter.get().getComms().message(_player, "Refunded " + economy.formatCurrency(_price) + ".");
+                Painter.get().getCommunicationManager().message(_player, "Refunded " + economy.formatCurrency(_price) + ".");
             }
         }
     }

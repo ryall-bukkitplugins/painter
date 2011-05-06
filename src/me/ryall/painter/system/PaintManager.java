@@ -19,19 +19,19 @@ public class PaintManager
         if (_block.getType() == Material.WOOL)
             return true;
 
-        return Painter.get().getConfig().isTransmutable(_block);
+        return Painter.get().getConfigManager().isTransmutable(_block);
     }
 
     public void set(Player _player, Block _block, byte _colour)
     {
-        double price = Painter.get().getEconomy().getPrice(_player, _block, 1);
+        double price = Painter.get().getEconomyManager().getPrice(_player, _block, 1);
 
         // If we have economy enabled, we need to charge the user first.
-        if (!Painter.get().getEconomy().charge(_player, price))
+        if (!Painter.get().getEconomyManager().charge(_player, price))
             return;
 
         // Log the change.
-        History history = Painter.get().getHistory().get(_player);
+        History history = Painter.get().getHistoryManager().getHistory(_player);
 
         if (history != null)
         {
@@ -49,7 +49,7 @@ public class PaintManager
         ArrayList<Block> blocks = new ArrayList<Block>();
 
         int blocksFound = 1;
-        int blocksAllowed = Painter.get().getConfig().getMaxFill();
+        int blocksAllowed = Painter.get().getConfigManager().getMaxFill();
 
         if (blocksAllowed <= 0)
             return;
@@ -84,14 +84,14 @@ public class PaintManager
         }
 
         // Charge for the transaction.
-        int blocksToCharge = Painter.get().getConfig().shouldFillChargePerBlock() ? blocksFound : 1;
-        double price = Painter.get().getEconomy().getPrice(_player, _source, blocksToCharge);
+        int blocksToCharge = Painter.get().getConfigManager().shouldFillChargePerBlock() ? blocksFound : 1;
+        double price = Painter.get().getEconomyManager().getPrice(_player, _source, blocksToCharge);
 
-        if (!Painter.get().getEconomy().charge(_player, price))
+        if (!Painter.get().getEconomyManager().charge(_player, price))
             return;
 
         // Log the change.
-        History history = Painter.get().getHistory().get(_player);
+        History history = Painter.get().getHistoryManager().getHistory(_player);
         Log log = null;
 
         if (history != null)

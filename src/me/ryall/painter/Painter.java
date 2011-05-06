@@ -58,7 +58,7 @@ public class Painter extends JavaPlugin
 
         registerEvents();
 
-        getConfig().load();
+        getConfigManager().load();
 
         logInfo("Started");
     }
@@ -105,32 +105,32 @@ public class Painter extends JavaPlugin
         return false;
     }
 
-    public ConfigManager getConfig()
+    public ConfigManager getConfigManager()
     {
         return configManager;
     }
 
-    public PermissionManager getPermissions()
+    public PermissionManager getPermissionManager()
     {
         return permissionManager;
     }
 
-    public EconomyManager getEconomy()
+    public EconomyManager getEconomyManager()
     {
         return economyManager;
     }
 
-    public CommunicationManager getComms()
+    public CommunicationManager getCommunicationManager()
     {
         return communicationManager;
     }
 
-    public HistoryManager getHistory()
+    public HistoryManager getHistoryManager()
     {
         return historyManager;
     }
 
-    public PaintManager getPaint()
+    public PaintManager getPaintManager()
     {
         return paintManager;
     }

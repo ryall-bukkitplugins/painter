@@ -19,9 +19,9 @@ public class HistoryManager
         histories = new HashMap<String, History>();
     }
 
-    public History get(Player _player)
+    public History getHistory(Player _player)
     {
-        if (Painter.get().getConfig().isHistoryEnabled())
+        if (Painter.get().getConfigManager().isHistoryEnabled())
         {
             History history = histories.get(_player.getName());
 
@@ -39,12 +39,12 @@ public class HistoryManager
 
     public void rollback(Player _player)
     {
-        if (!Painter.get().getConfig().isHistoryEnabled())
+        if (!Painter.get().getConfigManager().isHistoryEnabled())
             return;
 
-        if (Painter.get().getPermissions().hasRollbackPermission(_player))
+        if (Painter.get().getPermissionManager().hasRollbackPermission(_player))
         {
-            History history = get(_player);
+            History history = getHistory(_player);
 
             if (history != null)
             {
@@ -54,21 +54,21 @@ public class HistoryManager
                 {
                     history.rollback();
 
-                    if (Painter.get().getConfig().shouldHistoryRefundOnRollback())
-                        Painter.get().getEconomy().refund(_player, log.getPrice());
+                    if (Painter.get().getConfigManager().shouldHistoryRefundOnRollback())
+                        Painter.get().getEconomyManager().refund(_player, log.getPrice());
 
-                    Painter.get().getComms().message(_player, "Your changes were rolled-back.");
+                    Painter.get().getCommunicationManager().message(_player, "Your changes were rolled-back.");
                 } else
-                    Painter.get().getComms().error(_player, "You don't have any changes to roll-back.");
+                    Painter.get().getCommunicationManager().error(_player, "You don't have any changes to roll-back.");
             } else
-                Painter.get().getComms().error(_player, "Could not access your history.");
+                Painter.get().getCommunicationManager().error(_player, "Could not access your history.");
         } else
-            Painter.get().getComms().error(_player, "You don't have permission to roll-back changes.");
+            Painter.get().getCommunicationManager().error(_player, "You don't have permission to roll-back changes.");
     }
 
     public void delete(Player _player)
     {
-        if (!Painter.get().getConfig().shouldHistoryPersistOnLogout())
+        if (!Painter.get().getConfigManager().shouldHistoryPersistOnLogout())
         {
             if (histories.containsKey(_player.getName()))
                 histories.remove(_player.getName());

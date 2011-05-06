@@ -31,6 +31,11 @@ public class ConfigManager
         }
     }
 
+    public boolean shouldSecureChanges()
+    {
+        return config.getBoolean("General.Secure", true);
+    }
+    
     public boolean shouldConsumeDye()
     {
         return config.getBoolean("Dye.Consume", true);
@@ -38,7 +43,7 @@ public class ConfigManager
 
     public boolean isEconomyEnabled()
     {
-        return config.getBoolean("Economy.Enabled", false) && Painter.get().getEconomy().getInterface() != null;
+        return config.getBoolean("Economy.Enabled", false) && Painter.get().getEconomyManager().getInterface() != null;
     }
 
     public String getEconomyAdapter()

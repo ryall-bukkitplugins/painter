@@ -22,7 +22,7 @@ public class PainterPlayerListener extends PlayerListener
         Block block = _event.getClickedBlock();
 
         // If we've hit a paintable block.
-        if (block != null && Painter.get().getPaint().isPaintable(block))
+        if (block != null && Painter.get().getPaintManager().isPaintable(block))
         {
             Player player = _event.getPlayer();
             ItemStack item = player.getItemInHand();
@@ -30,16 +30,16 @@ public class PainterPlayerListener extends PlayerListener
             // If we've hit the paintable block with a dye.
             if (item.getTypeId() == ITEM_DYE)
             {
-                if (!Painter.get().getPermissions().hasDyePermission(player))
+                if (!Painter.get().getPermissionManager().hasDyePermission(player))
                 {
-                    Painter.get().getComms().error(player, "You don't have permission to dye blocks.");
+                    Painter.get().getCommunicationManager().error(player, "You don't have permission to dye blocks.");
                     return;
                 }
 
                 // If transmutation is off, only allow dyeing of wool blocks.
-                if (block.getType() != Material.WOOL && !Painter.get().getPermissions().hasTransmutePermission(player))
+                if (block.getType() != Material.WOOL && !Painter.get().getPermissionManager().hasTransmutePermission(player))
                 {
-                    Painter.get().getComms().error(player, "You don't have permission to transmute blocks.");
+                    Painter.get().getCommunicationManager().error(player, "You don't have permission to transmute blocks.");
                     return;
                 }
 
@@ -53,22 +53,22 @@ public class PainterPlayerListener extends PlayerListener
                 // Left click to change a single block.
                 if (_event.getAction() == Action.LEFT_CLICK_BLOCK)
                 {
-                    Painter.get().getPaint().set(player, block, colour);
+                    Painter.get().getPaintManager().set(player, block, colour);
                 }
                 // Right click to fill.
-                else if (_event.getAction() == Action.RIGHT_CLICK_BLOCK && Painter.get().getPermissions().hasFillPermission(player))
+                else if (_event.getAction() == Action.RIGHT_CLICK_BLOCK && Painter.get().getPermissionManager().hasFillPermission(player))
                 {
-                    if (block.getType() != Material.WOOL && !Painter.get().getConfig().isTransmuteFillEnabled())
+                    if (block.getType() != Material.WOOL && !Painter.get().getConfigManager().isTransmuteFillEnabled())
                     {
-                        Painter.get().getComms().error(player, "You cannot transmute and fill at the same time.");
+                        Painter.get().getCommunicationManager().error(player, "You cannot transmute and fill at the same time.");
                         return;
                     }
 
-                    Painter.get().getPaint().fill(player, block, colour);
+                    Painter.get().getPaintManager().fill(player, block, colour);
                 }
 
                 // Consume the dye if we have the option enabled.
-                if (Painter.get().getConfig().shouldConsumeDye())
+                if (Painter.get().getConfigManager().shouldConsumeDye())
                 {
                     int remaining = item.getAmount();
 
@@ -83,6 +83,6 @@ public class PainterPlayerListener extends PlayerListener
 
     public void onPlayerQuit(PlayerQuitEvent _event)
     {
-        Painter.get().getHistory().delete(_event.getPlayer());
+        Painter.get().getHistoryManager().delete(_event.getPlayer());
     }
 }

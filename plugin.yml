@@ -6,7 +6,7 @@ author: SirHedgehog
 commands:
     painter:
         description: Painter command
-        usage: /paint <command> [params]
+        usage: /painter <command> [params]
     paint:
         description: Painter command shorthand
         usage: /paint <command> [params]

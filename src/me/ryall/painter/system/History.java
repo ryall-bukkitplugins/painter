@@ -78,7 +78,7 @@ public class History
 
     public History()
     {
-        int max = Painter.get().getConfig().getMaxHistory();
+        int max = Painter.get().getConfigManager().getMaxHistory();
 
         if (max > 0)
         {
