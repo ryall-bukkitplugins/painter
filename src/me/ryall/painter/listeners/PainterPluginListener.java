@@ -13,4 +13,8 @@ public class PainterPluginListener extends ServerListener
         Painter.get().getPermissionManager().load();
         Painter.get().getEconomyManager().load();
     }
+    
+    public void onPluginDisable(PluginDisableEvent _event)
+    {
+    }
 }

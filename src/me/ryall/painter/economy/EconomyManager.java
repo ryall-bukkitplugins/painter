@@ -28,7 +28,12 @@ public class EconomyManager
                 if (plugin != null)
                 {
                     if (adapter.toLowerCase().equals("iconomy"))
-                        economy = new IConomyAdapter(plugin);
+                    {
+                        if (plugin.getDescription().getVersion().startsWith("5"))
+                            economy = new IConomyAdapter(plugin);
+                        else 
+                            economy = new IConomyFourAdapter(plugin);
+                    }
                     else if (adapter.toLowerCase().equals("mineconomy"))
                         economy = new MineConomyAdapter(plugin);
 
