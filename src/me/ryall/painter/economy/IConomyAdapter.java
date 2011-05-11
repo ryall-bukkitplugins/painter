@@ -3,8 +3,8 @@ package me.ryall.painter.economy;
 // iConomy
 import org.bukkit.plugin.Plugin;
 
-import com.nijiko.coelho.iConomy.iConomy;
-import com.nijiko.coelho.iConomy.system.Account;
+import com.iConomy.iConomy;
+import com.iConomy.system.Account;
 
 public class IConomyAdapter extends EconomyInterface
 {

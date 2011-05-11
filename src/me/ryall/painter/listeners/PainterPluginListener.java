@@ -3,6 +3,7 @@ package me.ryall.painter.listeners;
 // Bukkit
 import me.ryall.painter.Painter;
 
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.event.server.ServerListener;
 

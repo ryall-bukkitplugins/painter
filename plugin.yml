@@ -1,6 +1,6 @@
 name: Painter
 main: me.ryall.painter.Painter
-version: 1.3.0
+version: 1.3.1
 description: Make your world a more colourful place with lots of control over wool and wool colours.
 author: SirHedgehog
 commands:
